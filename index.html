@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Websocket MQTT Client</title>
+    <link type="text/css" rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="control.css">
+    <link rel="stylesheet" href="heading.css">
+    <link rel="stylesheet" href="slider.css">
+  </head>
+  <body>
+    <div class="container" ng-app="awsiot.sample" ng-controller="AppController as vm">
+      <div class="heading">
+        <div class="row">
+          <div class="title">
+            Ecosystem Web Controller
+          </div>
+        </div>
+          <div class="row">
+            <div class="course">
+              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                Author: WOW
+              </div>
+            </div>
+            <div class="name">
+              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                Danang University of Technology
+              </div>
+            </div>
+          </div>
+        </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="endpoint">Endpoint: </label>
+          <input type="text" class="form-control" id="endpoint" placeholder="EndPoint" ng-model="vm.endpoint">
+        </div>
+        <div class="form-group">
+          <label for="regionInput">Region: </label>
+          <input type="text" class="form-control" id="regionInput" placeholder="region" ng-model="vm.regionName">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <label for="clientId">Client id: </label>
+          <input type="text" class="form-control" id="clientId" ng-model="vm.clientId" />
+        </div>
+        <div class="input-group">
+          <label for="accessKey">Access key: </label>
+          <input type="text" class="form-control" id="accessKey" placeholder="AWS access key" ng-model="vm.accessKey"/>
+        </div>
+        <div class="form-group">
+          <label for="secretKey">Secret Key: </label>
+          <input type="password" class="form-control" id="secretKey" placeholder="AWS secret key" ng-model="vm.secretKey">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.createClient()" ng-disabled="!vm.accessKey || !vm.secretKey">Create Client</button>
+      </div>
+    </div>
+    <div class="panel panel-info" ng-repeat="clientCtr in vm.clients.val">
+      <div class="panel-heading">
+        <button type="button" class="close"  ng-click="vm.removeClient(clientCtr)"><span>&times;</span></button>
+        <h3 class="panel-title">Client {{::clientCtr.client.name}}</h3>
+      </div>
+      <div class="panel-body row">
+        <div class="col-md-6">
+          <p>Subscribe to see the messages published to the topic on the left.</p>
+          <div class="form-inline">
+            <div class="form-group">
+              <label for="topicInput">Topic 1: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic1" ng-model="clientCtr.topicName1" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 2: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic2" ng-model="clientCtr.topicName2" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 3: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic3" ng-model="clientCtr.topicName3" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 4: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic4" ng-model="clientCtr.topicName4" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 5: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic5" ng-model="clientCtr.topicName5" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 6: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic6" ng-model="clientCtr.topicName6" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 7: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic7" ng-model="clientCtr.topicName7" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 8: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic8" ng-model="clientCtr.topicName8" />
+
+            <div class="form-group">
+              <label for="topicInput">Topic 9: </label>
+              <input type="text" class="form-control" id="topicInput" placeholder="Topic9" ng-model="clientCtr.topicName9" />
+          <div class="form-group">
+            <button class="btn btn-primary" ng-click="clientCtr.subscribe()">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span id="connectionStatus">Monitor Panel</span>
+      </div>
+      <div class="subscript">
+        <div class="panel-body" id="serverCollapse">
+            <div class="row">
+            <i class="fa fa-bolt fa-fw" aria-hidden="true"></i>Power
+              <div class="subs">
+                <span id="power">NULL </span>
+              </div>
+            </div>
+
+            <div class="row">
+            <i class="fa fa-sun-o fa-fw" aria-hidden="true"></i>Lux
+              <div class="subs">
+                <span id="lux">NULL </span>
+              </div>
+            </div>
+
+            <div class="row">
+              <i class="fa fa-tint fa-fw" aria-hidden="true"></i>Hummidity
+                <div class="subs">
+                  <span id="humd">NULL </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <i class="fa fa-car fa-fw" aria-hidden="true"></i>Distance
+                  <div class="subs">
+                    <span id="dist">NULL </span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <i class="fa fa-user fa-fw" aria-hidden="true"></i>Motion
+                    <div class="subs">
+                      <span id="motion">NULL </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <i class="fa fa-lightbulb-o fa-fw" aria-hidden="true"></i>Light A
+                    <div class="subs">
+                      <span id="lightasub">NULL </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <i class="fa fa-lightbulb-o fa-fw" aria-hidden="true"></i>Light B
+                    <div class="subs">
+                      <span id="lightbsub">NULL </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <i class="fa fa-lightbulb-o fa-fw" aria-hidden="true"></i>Light C
+                    <div class="subs">
+                      <span id="lightcsub">NULL </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <i class="fa fa-power-off fa-fw" aria-hidden="true"></i>Socket
+                    <div class="subs">
+                      <span id="switchsub">NULL </span>
+                    </div>
+                </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span id="connectionStatus">Control Panel</span>
+      </div>
+      <div class="control">
+        <div class="panel-body" id="serverCollapse">
+            <div class="row">
+            <i class="fa fa-lightbulb-o fa-fw" aria-hidden="true"></i>Light A
+              <label class="switch">
+                    <input type="checkbox" id="lighta" ng-model="clientCtr.messagea" ng-click="clientCtr.messageKey()">
+                    <span class="slider round"></span>
+                  </label>
+            </div>
+
+            <div class="row">
+            <i class="fa fa-lightbulb-o fa-fw" aria-hidden="true"></i>Light B
+              <label class="switch">
+                    <input type="checkbox" id="lightb" ng-model="clientCtr.messageb" ng-click="clientCtr.messageKey()">
+                    <span class="slider round"></span>
+                  </label>
+            </div>
+
+            <div class="row">
+              <i class="fa fa-power-off fa-fw" aria-hidden="true"></i>Socket
+                <label class="switch">
+                      <input type="checkbox" id="lights" ng-model="clientCtr.messages" ng-click="clientCtr.messageKey()">
+                      <span class="slider round"></span>
+                    </label>
+              </div>
+
+              <div class="row">
+                <i class="fa fa-lightbulb-o fa-fw" aria-hidden="true"></i>Light C
+                  <label class="slidecontainer">
+                    <input type="range" id="lightc" min="0" max="100" value="0" step="1" class="slider1" ng-model="clientCtr.value" ng-change="clientCtr.messageKey()">
+                    <p>Value: <span id="valueSlider">0</span></p>
+                  </label>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</body>
+<script type="text/javascript" src="./bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="./bower_components/paho-mqtt-js/mqttws31.js"></script>
+<script type="text/javascript" src="./bower_components/cryptojslib/rollups/sha256.js"></script>
+<script type="text/javascript" src="./bower_components/cryptojslib/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="./js/app.js"></script>
+</html>
